@@ -20,6 +20,9 @@
   --green-soft:#2f5a45;
   --ochre:#b9722c;
   --slate:#26343c;
+  --hdr-bg:#fffdf8;
+  --hdr-ink:#17231c;
+  --hdr-rule:rgba(23,35,28,.14);
   --slate-ink:#dde5e3;
   --ochre-ink:#8a4f16;
   --rule:rgba(23,35,28,.16);
@@ -69,17 +72,17 @@ p:last-child{margin-bottom:0}
 .topbar .tel:hover{text-decoration:underline;text-underline-offset:4px}
 @media (max-width:40rem){.topbar .addr{display:none}.topbar .wrap{justify-content:space-between;gap:.75rem;padding:.5rem 0}}
 
-.site-header{position:sticky;top:0;z-index:40;background:rgba(247,242,233,.96);backdrop-filter:saturate(1.2) blur(6px);border-bottom:1px solid var(--rule)}
+.site-header{position:sticky;top:0;z-index:40;background:var(--hdr-bg);border-top:3px solid var(--ochre);border-bottom:1px solid var(--hdr-rule)}
 .site-header .wrap{display:flex;align-items:center;gap:1.5rem;padding:.85rem 0}
-.brand{display:flex;align-items:center;gap:.8rem;text-decoration:none;color:inherit;margin-right:auto}
+.brand{display:flex;align-items:center;gap:.8rem;text-decoration:none;color:var(--hdr-ink);margin-right:auto}
 .brand img{width:2.7rem;height:2.7rem}
 .brand b{display:block;font-family:var(--serif);font-weight:400;font-size:1.3rem;line-height:1.05}
-.brand small{display:block;font-size:.6875rem;letter-spacing:.17em;text-transform:uppercase;color:var(--muted);margin-top:.25rem}
+.brand small{display:block;font-size:.6875rem;letter-spacing:.17em;text-transform:uppercase;color:var(--hdr-ink);opacity:.7;margin-top:.25rem}
 
 .nav-toggle{display:none;align-items:center;gap:.6rem;min-height:44px;padding:.4rem .7rem;background:transparent;border:1px solid var(--rule);border-radius:2px;color:var(--green);font:inherit;font-size:.9rem;font-weight:600;cursor:pointer}
 .nav-toggle svg{width:18px;height:18px}
 nav.main ul{display:flex;align-items:center;gap:1.5rem;list-style:none;margin:0;padding:0;font-size:.9375rem}
-nav.main a{color:var(--ink);text-decoration:none;padding:.35rem 0;border-bottom:1px solid transparent}
+nav.main a{color:var(--hdr-ink);text-decoration:none;padding:.35rem 0;border-bottom:1px solid transparent}
 nav.main a:hover{border-bottom-color:var(--ochre)}
 nav.main a[aria-current="page"]{border-bottom-color:var(--green);font-weight:600}
 
@@ -302,3 +305,24 @@ footer a:hover{border-bottom-color:var(--ochre)}
   .reveal{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s ease}
   .reveal.is-in{opacity:1;transform:none}
 }
+
+/* ---------- header: telephone, and the dark statement band ---------- */
+.header-tel{display:inline-flex;align-items:center;gap:.5rem;font-size:.9375rem;font-weight:600;color:var(--hdr-ink);text-decoration:none;white-space:nowrap}
+.header-tel svg{width:17px;height:17px;opacity:.7;flex:none}
+.header-tel:hover{text-decoration:underline;text-underline-offset:4px}
+@media (max-width:60rem){
+  .header-tel span{display:inline;font-size:.875rem}
+  .header-tel{gap:.4rem}
+  .header-tel svg{width:16px;height:16px}
+  .brand small{display:none}
+  .brand b{font-size:1.15rem}
+  .brand img{width:2.3rem;height:2.3rem}
+  .site-header .wrap{gap:.6rem}
+  .nav-toggle{padding:.35rem .55rem}
+}
+
+.band-dark{background:var(--green);color:#f1eee4}
+.band-dark h2,.band-dark h3,.band-dark strong{color:#fff}
+.band-dark p,.band-dark li{color:#dde5da}
+.band-dark a{color:#f6f3ea;border-bottom-color:rgba(255,255,255,.4)}
+.band-dark .eyebrow{color:#c9b68a}
