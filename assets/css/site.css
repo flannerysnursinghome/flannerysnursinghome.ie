@@ -97,14 +97,18 @@ nav.main a[aria-current="page"]{border-bottom-color:var(--green);font-weight:600
 }
 
 /* ---------- hero ---------- */
-.hero{border-bottom:1px solid var(--rule)}
-.hero .wrap{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:clamp(1.75rem,3.5vw,3.5rem);padding:clamp(2rem,4vw,3.4rem) 0 clamp(2rem,4vw,3rem);align-items:center}
+/* ---------- hero: photograph across the page, words on a panel over it ---------- */
+.hero{position:relative;border-bottom:0}
+.hero-plate{margin:0}
+.hero-plate img{width:100%;height:clamp(300px,50vw,620px);object-fit:cover;object-position:center 58%;display:block}
+.hero .wrap{position:relative;margin-top:clamp(-3.5rem,-5vw,-2rem);padding-bottom:clamp(1.6rem,3vw,2.4rem)}
+.hero-copy{background:var(--paper);max-width:46rem;padding:clamp(1.4rem,3vw,2.5rem) clamp(1.3rem,3vw,2.5rem) clamp(1.3rem,2.6vw,2rem);border-top:3px solid var(--ochre);box-shadow:0 22px 48px -34px rgba(23,35,28,.55)}
+.hero h1{font-size:clamp(2.2rem,5vw,3.9rem);line-height:1.02}
+.hero .lede{margin-top:1rem}
 .hero-copy p{max-width:32rem;color:var(--body)}
 .hero-copy .lede{font-size:1.125rem;margin-top:1.35rem}
 .eyebrow,.hero-copy p.eyebrow,.split p.eyebrow,.page-head p.eyebrow{font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ochre-ink);font-weight:600;margin:0 0 1rem}
 h1 em{font-style:italic;color:var(--green-soft)}
-.hero-figure{margin:0}
-.hero-figure img,.hero-figure video{width:100%;aspect-ratio:5/4;object-fit:cover;object-position:center 58%;border-radius:2px;display:block;background:var(--paper-deep)}
 .hero-cap{font-size:.8125rem;color:var(--muted);padding-top:.5rem}
 .hero-facts{display:flex;flex-wrap:wrap;gap:.4rem 1rem;margin-top:1.75rem;font-size:.875rem;color:var(--muted);list-style:none;padding:0}
 .hero-facts b{color:var(--ink);font-weight:600}
@@ -209,7 +213,12 @@ section{padding-block:clamp(2.75rem,5vw,4.5rem)}
 .note.green{border-left-color:var(--green)}
 
 /* ---------- page header ---------- */
-.page-head{border-bottom:1px solid var(--rule);background:var(--paper-deep)}
+.page-head{border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);background:var(--paper-deep)}
+.page-head .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.6fr);gap:clamp(1.5rem,3vw,3rem);align-items:stretch}
+.page-head h1{font-size:clamp(1.9rem,4.2vw,3rem)}
+.head-copy{max-width:42rem}
+.head-fig{margin:0;position:relative;min-height:230px;align-self:stretch}
+.head-fig img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:2px;display:block}
 .page-head .wrap{padding:clamp(2rem,4vw,3rem) 0 clamp(1.75rem,3.5vw,2.6rem)}
 .page-head p{max-width:36rem;color:var(--body);margin-top:1rem;font-size:1.0625rem}
 .crumbs{font-size:.8125rem;color:var(--muted);margin-bottom:.9rem}
@@ -298,8 +307,7 @@ footer a:hover{border-bottom-color:var(--ochre)}
 @media print{
   .topbar,.site-header,.cta,footer .colophon,.nav-toggle,.btn{display:none!important}
   body{background:#fff;color:#000;font-size:11pt}
-  .page-head{background:#fff;border:0}
-  a{color:#000;text-decoration:underline}
+    a{color:#000;text-decoration:underline}
   section{padding-block:1rem}
   .wrap{width:100%}
 }
@@ -348,3 +356,18 @@ footer a:hover{border-bottom-color:var(--ochre)}
 .band-dark p,.band-dark li{color:#dde5da}
 .band-dark a{color:#f6f3ea;border-bottom-color:rgba(255,255,255,.4)}
 .band-dark .eyebrow{color:#c9b68a}
+
+@media (max-width:46rem){
+  .page-head .wrap{grid-template-columns:1fr;gap:1rem}
+  .page-head h1{font-size:clamp(1.75rem,8vw,2.3rem)}
+  .head-fig img{aspect-ratio:16/7}
+  .hero-copy{max-width:none}
+  .hero .wrap{margin-top:-1.6rem}
+}
+
+/* the hero panel sits over the foot of the photograph on a wide screen */
+@media (min-width:46rem){
+  .hero{position:relative}
+  .hero .wrap{position:absolute;left:0;right:0;bottom:0;margin:0;padding-bottom:clamp(1.6rem,3vw,2.6rem)}
+  .hero-copy{box-shadow:0 30px 60px -40px rgba(10,18,14,.75)}
+}
