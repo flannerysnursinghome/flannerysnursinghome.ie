@@ -300,10 +300,28 @@ footer a:hover{border-bottom-color:var(--ochre)}
   .wrap{width:100%}
 }
 
-/* ---------- gentle reveal on scroll ---------- */
+/* ---------- motion, all of it switched off under reduced-motion ---------- */
+.site-header{transition:box-shadow .3s ease,border-color .3s ease}
+.site-header .wrap{transition:padding .3s ease}
+.site-header.is-scrolled{box-shadow:0 10px 24px -18px rgba(23,35,28,.55)}
+.site-header.is-scrolled .wrap{padding-top:.5rem;padding-bottom:.5rem}
+
 @media (prefers-reduced-motion: no-preference){
-  .reveal{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s ease}
+  /* sections rise as they arrive */
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .75s cubic-bezier(.22,.61,.36,1),transform .75s cubic-bezier(.22,.61,.36,1)}
   .reveal.is-in{opacity:1;transform:none}
+
+  /* items within a group arrive one after another */
+  .reveal-child{opacity:0;transform:translateY(16px);transition:opacity .65s cubic-bezier(.22,.61,.36,1),transform .65s cubic-bezier(.22,.61,.36,1)}
+  .reveal-child.is-in{opacity:1;transform:none}
+
+  /* photographs settle rather than snap */
+  .reveal-img img{transform:scale(1.035);transition:transform 1.2s cubic-bezier(.22,.61,.36,1)}
+  .reveal-img.is-in img{transform:scale(1)}
+
+  /* the hero introduces itself, once */
+  .hero-in{opacity:0;transform:translateY(16px);animation:heroIn .85s cubic-bezier(.22,.61,.36,1) forwards}
+  @keyframes heroIn{to{opacity:1;transform:none}}
 }
 
 /* ---------- header: telephone, and the dark statement band ---------- */

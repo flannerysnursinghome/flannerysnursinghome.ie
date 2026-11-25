@@ -119,12 +119,22 @@
     }
   }
 
-  /* ---------- reveal sections as they come into view ---------- */
+  /* ---------- motion on scroll ---------- */
   (function () {
-    if (!('IntersectionObserver' in window)) return;
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    var targets = document.querySelectorAll('main > section, .duo, .shots, .mosaic-top, .roles');
-    if (!targets.length) return;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* the header tightens once you leave the top */
+    var header = document.querySelector('.site-header');
+    if (header) {
+      var onScroll = function () {
+        header.classList.toggle('is-scrolled', window.scrollY > 60);
+      };
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive: true });
+    }
+
+    if (reduce || !('IntersectionObserver' in window)) return;
+
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
@@ -133,9 +143,40 @@
         }
       });
     }, { rootMargin: '0px 0px -8% 0px', threshold: 0.06 });
-    Array.prototype.forEach.call(targets, function (el) {
-      el.classList.add('reveal');
-      io.observe(el);
+
+    /* sections */
+    Array.prototype.forEach.call(
+      document.querySelectorAll('main > section, .duo, .mosaic-top'),
+      function (el) { el.classList.add('reveal'); io.observe(el); }
+    );
+
+    /* groups whose items arrive one after another */
+    var groups = document.querySelectorAll('.care-list, .shots, .roles, .cats, .steps, .note-list');
+    Array.prototype.forEach.call(groups, function (group) {
+      Array.prototype.forEach.call(group.children, function (item, index) {
+        item.classList.add('reveal-child');
+        item.style.transitionDelay = Math.min(index * 70, 420) + 'ms';
+        io.observe(item);
+      });
     });
+
+    /* photographs settle into place */
+    Array.prototype.forEach.call(
+      document.querySelectorAll('figure:not(.hero-figure)'),
+      function (fig) {
+        if (!fig.querySelector('img')) return;
+        fig.classList.add('reveal-img');
+        if (!fig.classList.contains('reveal-child')) io.observe(fig);
+      }
+    );
+
+    /* the hero introduces itself, once */
+    var hero = document.querySelector('.hero');
+    if (hero) {
+      Array.prototype.forEach.call(hero.children.length ? hero.querySelectorAll('h1, .lede, p, .actions, figure, .hero-stats') : [], function (el, index) {
+        el.classList.add('hero-in');
+        el.style.animationDelay = Math.min(index * 110, 550) + 'ms';
+      });
+    }
   })();
 })();
