@@ -91,18 +91,54 @@
         }
 
         var kind = form.getAttribute('data-form') || 'visit';
-        var lines = readForm(form);
         var address = form.getAttribute('data-email') || 'info@flannerysnursinghome.ie';
-        var link = 'mailto:' + address +
-          '?subject=' + encodeURIComponent(SUBJECT[kind] || SUBJECT.visit) +
-          '&body=' + encodeURIComponent(lines.join('\n'));
+        var subject = SUBJECT[kind] || SUBJECT.visit;
+        var endpoint = form.getAttribute('data-endpoint') || '';
 
-        window.location.href = link;
+        var fallback = function (note) {
+          var lines = readForm(form);
+          window.location.href = 'mailto:' + address +
+            '?subject=' + encodeURIComponent(subject) +
+            '&body=' + encodeURIComponent(lines.join('\n'));
+          status(form, note +
+            ' Your email app should be open now; press send there. If nothing opened, ' +
+            'ring <a href="tel:+3539343130">093 431 30</a> instead, or write to us at Chapel Road, Abbeyknockmoy.');
+        };
 
-        status(form,
-          '<strong>Your email app should be open now.</strong>' +
-          'Press send there and it reaches us. If nothing opened, ' +
-          'ring <a href="tel:+3539343130">093 431 30</a> instead, or write to us at Chapel Road, Abbeyknockmoy.');
+        /* Nothing configured yet: the visitor's own mail app is the honest route. */
+        if (!endpoint) {
+          fallback('<strong>Your email app should be open now.</strong>');
+          return;
+        }
+
+        var payload = { _subject: subject, _page: window.location.pathname };
+        Array.prototype.forEach.call(form.elements, function (el) {
+          if (!el.name || el.name.charAt(0) === '_') return;
+          payload[el.name] = (el.type === 'checkbox') ? (el.checked ? 'yes' : 'no') : el.value;
+        });
+
+        var button = form.querySelector('[type="submit"]');
+        var label = button ? button.textContent : '';
+        if (button) { button.disabled = true; button.textContent = 'Sending…'; }
+
+        fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(payload)
+        })
+          .then(function (response) {
+            if (!response.ok) throw new Error('HTTP ' + response.status);
+            form.reset();
+            status(form, '<strong>Thank you — that has reached us.</strong> ' +
+              'We will come back to you, usually the same day. If it is urgent, ring ' +
+              '<a href="tel:+3539343130">093 431 30</a>.');
+          })
+          .catch(function () {
+            fallback('<strong>We could not send that directly.</strong>');
+          })
+          .then(function () {
+            if (button) { button.disabled = false; button.textContent = label; }
+          });
       });
     })(forms[f]);
   }
