@@ -91,7 +91,7 @@
         }
 
         var kind = form.getAttribute('data-form') || 'visit';
-        var address = form.getAttribute('data-email') || 'info@flannerysnursinghome.ie';
+        var address = form.getAttribute('data-email') || 'mary@flannerysnursinghome.ie';
         var subject = SUBJECT[kind] || SUBJECT.visit;
         var endpoint = form.getAttribute('data-endpoint') || '';
 
