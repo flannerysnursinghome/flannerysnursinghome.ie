@@ -208,7 +208,7 @@ section{padding-block:clamp(2.75rem,5vw,4.5rem)}
 
 /* ---------- full-width grounds strip ---------- */
 .wide-strip{margin:0;padding:0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
-.wide-strip figure{margin:0}
+.wide-strip figure{margin:0;overflow:hidden}
 .wide-strip img{display:block;width:100%;height:clamp(200px,28vw,340px);object-fit:cover}
 
 /* ---------- callout ---------- */
